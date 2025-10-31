@@ -67,21 +67,19 @@ class _TelaInicialState extends State<TelaInicial> {
   Future<void> _configurarTTS() async {
     await flutterTts.setLanguage('pt-BR');
     await flutterTts.setSpeechRate(0.5);
-    await _falarBoasVindas();
   }
 
-  Future<void> _falarBoasVindas() async {
+  Future<void> _falarApresentacao() async {
     if (_mensagemJaFoiLida) return;
+    await flutterTts.stop();
     await flutterTts.speak(
       'Bem-vindo ao Braileando, um aplicativo de apoio à alfabetização. '
       'Esta é uma iniciativa do mestrando Lucas Reis, desenvolvida como produto educacional '
       'para o Programa de Pós-Graduação em Educação Científica, Inclusão e Diversidade da UFRB.'
     );
-    if (mounted) {
-      setState(() {
-        _mensagemJaFoiLida = true;
-      });
-    }
+    setState(() {
+      _mensagemJaFoiLida = true;
+    });
   }
 
   @override
@@ -103,65 +101,80 @@ class _TelaInicialState extends State<TelaInicial> {
           ),
         ),
         child: SafeArea(
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: _falarBoasVindas,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/logo.png'),
-                    const SizedBox(height: 20),
-                    Semantics(
-                      header: true,
-                      child: Text(
-                        'PPGECID',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontSize: 24,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.blue.withAlpha(128),
-                              blurRadius: 10,
-                            ),
-                          ],
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/logo.png'),
+                  const SizedBox(height: 20),
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      'PPGECID',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontSize: 24,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            color: Colors.blue.withAlpha(128),
+                            blurRadius: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Creator: By Lucas Reis',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
+                      color: Colors.grey[300],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 60),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Semantics(
+                      label: 'Ouvir apresentação',
+                      button: true,
+                      child: Tooltip(
+                        message: 'Ouvir apresentação',
+                        child: IconButton(
+                          onPressed: _falarApresentacao,
+                          icon: const Icon(Icons.volume_up, color: Colors.white70),
+                          iconSize: 18,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+                          splashRadius: 16,
+                          visualDensity: VisualDensity.compact,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 5),
-                    Text(
-                      'Creator: By Lucas Reis',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontSize: 16,
-                        color: Colors.grey[300],
-                      ),
-                      textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SelecaoNivel()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2C5364),
+                      foregroundColor: Colors.white,
+                      elevation: 5,
+                      shadowColor: Colors.blue.withAlpha(128),
                     ),
-                    const SizedBox(height: 60),
-                    ElevatedButton(
-                      onPressed: () {
-                        _falarBoasVindas();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const SelecaoNivel()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2C5364),
-                        foregroundColor: Colors.white,
-                        elevation: 5,
-                        shadowColor: Colors.blue.withAlpha(128),
-                      ),
-                      child: Semantics(
-                        label: 'Iniciar Jogo',
-                        child: Text('Iniciar Jogo', style: Theme.of(context).textTheme.labelLarge),
-                      ),
+                    child: Semantics(
+                      label: 'Iniciar Jogo',
+                      child: Text('Iniciar Jogo', style: Theme.of(context).textTheme.labelLarge),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
