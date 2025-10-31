@@ -65,14 +65,19 @@ class _TelaInicialState extends State<TelaInicial> {
   }
 
   Future<void> _configurarTTS() async {
-    if (!_mensagemJaFoiLida) {
-      await flutterTts.setLanguage('pt-BR');
-      await flutterTts.setSpeechRate(0.5);
-      await flutterTts.speak(
-        'Bem-vindo ao Braileando, um aplicativo de apoio à alfabetização. '
-        'Esta é uma iniciativa do mestrando Lucas Reis, desenvolvida como produto educacional '
-        'para o Programa de Pós-Graduação em Educação Científica, Inclusão e Diversidade da UFRB.'
-      );
+    await flutterTts.setLanguage('pt-BR');
+    await flutterTts.setSpeechRate(0.5);
+    await _falarBoasVindas();
+  }
+
+  Future<void> _falarBoasVindas() async {
+    if (_mensagemJaFoiLida) return;
+    await flutterTts.speak(
+      'Bem-vindo ao Braileando, um aplicativo de apoio à alfabetização. '
+      'Esta é uma iniciativa do mestrando Lucas Reis, desenvolvida como produto educacional '
+      'para o Programa de Pós-Graduação em Educação Científica, Inclusão e Diversidade da UFRB.'
+    );
+    if (mounted) {
       setState(() {
         _mensagemJaFoiLida = true;
       });
@@ -98,60 +103,65 @@ class _TelaInicialState extends State<TelaInicial> {
           ),
         ),
         child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/logo.png'),
-                  const SizedBox(height: 20),
-                  Semantics(
-                    header: true,
-                    child: Text(
-                      'PPGECID',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontSize: 24,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.blue.withAlpha(128),
-                            blurRadius: 10,
-                          ),
-                        ],
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: _falarBoasVindas,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/logo.png'),
+                    const SizedBox(height: 20),
+                    Semantics(
+                      header: true,
+                      child: Text(
+                        'PPGECID',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontSize: 24,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.blue.withAlpha(128),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Creator: By Lucas Reis',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 16,
-                      color: Colors.grey[300],
+                    const SizedBox(height: 5),
+                    Text(
+                      'Creator: By Lucas Reis',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: 16,
+                        color: Colors.grey[300],
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 60),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SelecaoNivel()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2C5364),
-                      foregroundColor: Colors.white,
-                      elevation: 5,
-                      shadowColor: Colors.blue.withAlpha(128),
+                    const SizedBox(height: 60),
+                    ElevatedButton(
+                      onPressed: () {
+                        _falarBoasVindas();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SelecaoNivel()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2C5364),
+                        foregroundColor: Colors.white,
+                        elevation: 5,
+                        shadowColor: Colors.blue.withAlpha(128),
+                      ),
+                      child: Semantics(
+                        label: 'Iniciar Jogo',
+                        child: Text('Iniciar Jogo', style: Theme.of(context).textTheme.labelLarge),
+                      ),
                     ),
-                    child: Semantics(
-                      label: 'Iniciar Jogo',
-                      child: Text('Iniciar Jogo', style: Theme.of(context).textTheme.labelLarge),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

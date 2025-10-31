@@ -1,0 +1,38 @@
+{
+  "1_ano": [
+    "CASA",
+    "BOLA",
+    "GATO",
+    "SOL",
+    "LUA",
+    "MESA",
+    "CADEIRA",
+    "LIVRO",
+    "LAPIS",
+    "BORRACHA"
+  ],
+  "2_ano": [
+    "ESCOLA",
+    "PROFESSOR",
+    "ALUNO",
+    "CADERNO",
+    "CANETA",
+    "REGUA",
+    "TESOURA",
+    "COLA",
+    "LAPIS",
+    "BORRACHA"
+  ],
+  "3_ano": [
+    "COMPUTADOR",
+    "INTERNET",
+    "TECLADO",
+    "MOUSE",
+    "MONITOR",
+    "IMPRESSORA",
+    "CAMERA",
+    "CELULAR",
+    "TABLET",
+    "NOTEBOOK"
+  ]
+} 
